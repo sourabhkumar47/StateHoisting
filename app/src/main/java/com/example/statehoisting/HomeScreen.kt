@@ -32,7 +32,10 @@ import com.example.statehoisting.ui.theme.WellnessTaskItem
 
 @Composable
 fun HomeScreen() {
-    StateFullCounter()
+    Column {
+        StateFullCounter()
+        WellnessTaskList()
+    }
 }
 
 //Stateful composable
@@ -43,6 +46,8 @@ fun StateFullCounter() {
     }
     //calling the stateless composable
     WaterCounter(count = count, onIncrement = { count++ }, onClear = { count = 0 })
+
+
 }
 
 //Stateless composable
