@@ -32,35 +32,50 @@ import com.example.statehoisting.ui.theme.WellnessTaskItem
 
 @Composable
 fun HomeScreen() {
-    WaterCounter()
+    StateFullCounter()
 }
 
+//Stateful composable
 @Composable
-fun WaterCounter(
-    modifier: Modifier = Modifier
-) {
+fun StateFullCounter() {
     var count by rememberSaveable {
         mutableIntStateOf(0)
     }
+    //calling the stateless composable
+    WaterCounter(count = count, onIncrement = { count++ }, onClear = { count = 0 })
+}
+
+//Stateless composable
+@Composable
+fun WaterCounter(
+    count: Int,
+    onIncrement: () -> Unit,
+    onClear: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+// Removed this state and added as parameters to make the composable stateless
+//    var count by rememberSaveable {
+//        mutableIntStateOf(0)
+//    }
 
     Column(modifier = modifier.padding(16.dp)) {
         if (count > 0) {
-            var showTask by rememberSaveable {
-                mutableStateOf(true)
-            }
-            if (showTask) {
-                WellnessTaskItem(
-                    onClose = { showTask = false },
-                    taskName = "Have you taken your 15 minute walk today?"
-                )
-            }
+//            var showTask by rememberSaveable {
+//                mutableStateOf(true)
+//            }
+//            if (showTask) {
+//                WellnessTaskItem(
+//                    onClose = { showTask = false },
+//                    taskName = "Have you taken your 15 minute walk today?"
+//                )
+//            }
             Text(
                 text = "You've had $count glasses.",
             )
         }
         Row {
             Button(
-                onClick = { count++ },
+                onClick = onIncrement,
                 modifier = Modifier.padding(top = 16.dp),
                 enabled = count < 10
             ) {
@@ -71,7 +86,7 @@ fun WaterCounter(
             Spacer(modifier = Modifier.width(20.dp))
 
             Button(
-                onClick = { count = 0 },
+                onClick = onClear,
                 modifier = Modifier.padding(top = 16.dp)
             ) {
                 Text(
@@ -85,5 +100,9 @@ fun WaterCounter(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun WaterCounterPreview() {
-    WaterCounter()
+    WaterCounter(
+        count = 0,
+        onIncrement = {},
+        onClear = {}
+    )
 }
