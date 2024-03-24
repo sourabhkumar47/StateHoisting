@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,8 +35,17 @@ import com.example.statehoisting.ui.theme.WellnessTaskItem
 fun HomeScreen() {
     Column {
         StateFullCounter()
-        WellnessTaskList()
+
+        val list = remember {
+            getWellnessTasks().toMutableStateList()
+        }
+        WellnessTasksList(list = list, onCloseTask = { task -> list.remove(task) })
+
     }
+}
+
+private fun getWellnessTasks() = List(300) { i ->
+    WellnessTask(i, "Task # $i")
 }
 
 //Stateful composable

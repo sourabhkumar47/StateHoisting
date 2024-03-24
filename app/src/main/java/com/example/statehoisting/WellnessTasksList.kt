@@ -8,20 +8,24 @@ import androidx.compose.foundation.lazy.items
 import com.example.statehoisting.ui.theme.WellnessTaskItem
 
 
-fun getWellnessTasks() = List(300) { i ->
-    WellnessTask(i, "Task # $i")
-}
+//fun getWellnessTasks() = List(300) { i ->
+//    WellnessTask(i, "Task # $i")
+//}
 
 @Composable
-fun WellnessTaskList(
+fun WellnessTasksList(
     modifier: Modifier = Modifier,
-    list: List<WellnessTask> = remember { getWellnessTasks() }
+    onCloseTask: (WellnessTask) -> Unit,
+    list: List<WellnessTask>
 ) {
     LazyColumn(
         modifier = modifier
     ) {
-        items(list) { task ->
-            WellnessTaskItem(taskName = task.label)
+        items(
+            items = list,
+            key = { task -> task.id }
+        ) { task ->
+            WellnessTaskItem(taskName = task.label, onClose = { onCloseTask(task) })
         }
     }
 }
